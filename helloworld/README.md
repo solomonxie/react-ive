@@ -12,16 +12,18 @@ npm install
 npm run dev
 ```
 
-## How to advance
+## How to run a lesson
 
-Open `index.html` and change the one `<script>` line to the next file:
+The app has one stable entry point. Pass the lesson number to the runner:
 
-```html
-<script type="module" src="/02-components-and-props.tsx"></script>
+```sh
+npm run lesson -- 01
+npm run lesson -- 02
+npm run lesson -- 08
 ```
 
-Save, reload the browser, and read the diff between that file and the
-previous one to see what's new.
+The command starts Vite and opens the selected lesson. If you omit the number,
+lesson 01 is used. You can also run `npm run dev` to start lesson 01.
 
 ## Lessons
 
@@ -40,7 +42,9 @@ previous one to see what's new.
 
 ```
 helloworld/
-  index.html          # dev entry — script src picks the active lesson
+  index.html          # fixed HTML shell
+  main.tsx             # loads the lesson selected by the runner
+  scripts/run-lesson.mjs
   public/             # static assets (favicon, etc.)
   01-hello-world.tsx  # lessons, flat, one file per step
   ...

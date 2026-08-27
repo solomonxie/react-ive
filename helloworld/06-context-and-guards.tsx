@@ -3,7 +3,7 @@
 // to server middleware). Goal: learn Context and gating routes on state.
 //
 // Run:  cd helloworld && npm run dev
-//       (first set index.html's <script src> to "/06-context-and-guards.tsx")
+//       npm run lesson -- 06
 // Open: http://localhost:5173/
 
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'

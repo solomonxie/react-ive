@@ -2,7 +2,7 @@
 // loading/error/success state. Goal: learn side effects and async data in React.
 //
 // Run:  cd helloworld && npm run dev
-//       (first set index.html's <script src> to "/04-effects-and-fetching.tsx")
+//       npm run lesson -- 04
 // Open: http://localhost:5173/
 
 import { useEffect, useState } from 'react'

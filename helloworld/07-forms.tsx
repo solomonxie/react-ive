@@ -2,7 +2,7 @@
 // Goal: learn controlled inputs and handling form submission in React.
 //
 // Run:  cd helloworld && npm run dev
-//       (first set index.html's <script src> to "/07-forms.tsx")
+//       npm run lesson -- 07
 // Open: http://localhost:5173/
 
 import { createContext, useContext, useEffect, useState, type ReactNode, type SubmitEvent } from 'react'

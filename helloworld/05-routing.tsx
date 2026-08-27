@@ -2,7 +2,7 @@
 // Goal: learn client-side navigation and reading URL params.
 //
 // Run:  cd helloworld && npm run dev
-//       (first set index.html's <script src> to "/05-routing.tsx")
+//       npm run lesson -- 05
 // Open: http://localhost:5173/
 
 import { useEffect, useState } from 'react'

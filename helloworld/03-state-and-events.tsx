@@ -2,7 +2,7 @@
 // Goal: learn how component state changes trigger re-renders.
 //
 // Run:  cd helloworld && npm run dev
-//       (first set index.html's <script src> to "/03-state-and-events.tsx")
+//       npm run lesson -- 03
 // Open: http://localhost:5173/
 
 import { useState } from 'react'

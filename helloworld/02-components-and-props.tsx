@@ -2,7 +2,7 @@
 // Goal: learn how data flows into a component via typed props.
 //
 // Run:  cd helloworld && npm run dev
-//       (first set index.html's <script src> to "/02-components-and-props.tsx")
+//       npm run lesson -- 02
 // Open: http://localhost:5173/
 
 import { createRoot } from 'react-dom/client'
