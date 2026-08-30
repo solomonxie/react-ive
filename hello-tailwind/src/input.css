@@ -1,0 +1,41 @@
+/*
+  Tailwind CSS v4 entry point — CSS-first config.
+  `@import "tailwindcss"` replaces the old @tailwind base/components/utilities
+  directives and the tailwind.config.js file for the base setup.
+*/
+@import "tailwindcss";
+
+/*
+  Lesson 05: custom design tokens via @theme.
+  Anything defined here becomes a utility class automatically —
+  --color-brand-* generates text-brand-*, bg-brand-*, border-brand-*, etc.
+  --font-display generates font-display.
+*/
+@theme {
+  --color-brand-50: oklch(0.97 0.02 260);
+  --color-brand-100: oklch(0.93 0.05 260);
+  --color-brand-300: oklch(0.8 0.12 260);
+  --color-brand-500: oklch(0.6 0.19 260);
+  --color-brand-600: oklch(0.52 0.19 260);
+  --color-brand-700: oklch(0.44 0.17 260);
+
+  --font-display: "Georgia", "Times New Roman", serif;
+}
+
+/*
+  Lesson 05: @apply-based component classes.
+  Bundle a repeated utility combo into one semantic class name,
+  usable anywhere like any other class.
+*/
+@layer components {
+  .btn-brand {
+    @apply rounded-lg bg-brand-600 px-4 py-2 font-semibold text-white shadow-sm
+      hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-brand-300
+      focus:ring-offset-2 transition-colors;
+  }
+
+  .card-themed {
+    @apply rounded-xl border border-brand-100 bg-brand-50 p-6 shadow-sm
+      dark:border-brand-700 dark:bg-slate-800;
+  }
+}

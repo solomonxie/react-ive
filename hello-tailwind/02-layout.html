@@ -1,0 +1,90 @@
+<!doctype html>
+<!--
+  Lesson 02: Layout
+  Goal: build a real page layout — a top nav, a sidebar, and a main content
+        area with a card grid — using only flexbox and grid utility classes.
+        Carries forward the typography/color utilities from lesson 01.
+  Run:  make build
+  Open: open 02-layout.html
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>02 — Layout</title>
+  <link rel="stylesheet" href="dist/output.css" />
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen">
+  <!-- Nav bar: flexbox, space-between -->
+  <header class="flex items-center justify-between bg-white border-b border-slate-200 px-6 py-4">
+    <span class="text-lg font-bold text-slate-900">Lesson 02</span>
+    <nav class="flex gap-6 text-sm font-medium text-slate-600">
+      <a href="#" class="text-sky-600">Dashboard</a>
+      <a href="#">Projects</a>
+      <a href="#">Settings</a>
+    </nav>
+  </header>
+
+  <!-- Body: sidebar + content, side by side with flex -->
+  <div class="flex">
+    <aside class="w-56 shrink-0 bg-white border-r border-slate-200 min-h-[calc(100vh-65px)] p-4">
+      <p class="text-xs font-semibold uppercase tracking-wide text-slate-400 mb-3">
+        Sections
+      </p>
+      <ul class="flex flex-col gap-1 text-sm text-slate-700">
+        <li class="rounded px-3 py-2 bg-sky-50 text-sky-700 font-medium">Overview</li>
+        <li class="rounded px-3 py-2 hover:bg-slate-50">Activity</li>
+        <li class="rounded px-3 py-2 hover:bg-slate-50">Team</li>
+        <li class="rounded px-3 py-2 hover:bg-slate-50">Billing</li>
+      </ul>
+    </aside>
+
+    <main class="flex-1 px-8 py-8">
+      <h1 class="text-2xl font-bold text-slate-900">Overview</h1>
+      <p class="mt-2 text-slate-600">
+        The nav and sidebar use <code class="text-sky-700">flex</code>. The
+        cards below use <code class="text-sky-700">grid</code>.
+      </p>
+
+      <!-- Card grid -->
+      <section class="mt-8 grid grid-cols-3 gap-6">
+        <article class="bg-white rounded-lg border border-slate-200 p-6">
+          <p class="text-sm text-slate-500">Users</p>
+          <p class="mt-2 text-3xl font-bold text-slate-900">1,204</p>
+        </article>
+
+        <article class="bg-white rounded-lg border border-slate-200 p-6">
+          <p class="text-sm text-slate-500">Revenue</p>
+          <p class="mt-2 text-3xl font-bold text-slate-900">$8,420</p>
+        </article>
+
+        <article class="bg-white rounded-lg border border-slate-200 p-6">
+          <p class="text-sm text-slate-500">Uptime</p>
+          <p class="mt-2 text-3xl font-bold text-slate-900">99.9%</p>
+        </article>
+      </section>
+
+      <!-- A second grid: flex-wrap style card list -->
+      <section class="mt-10">
+        <h2 class="text-xl font-semibold text-slate-800 mb-4">Recent projects</h2>
+        <div class="grid grid-cols-2 gap-4">
+          <div class="flex items-center gap-4 bg-white rounded-lg border border-slate-200 p-4">
+            <div class="h-10 w-10 rounded-full bg-sky-100 shrink-0"></div>
+            <div>
+              <p class="font-medium text-slate-900">Marketing site</p>
+              <p class="text-sm text-slate-500">Updated 2 hours ago</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-4 bg-white rounded-lg border border-slate-200 p-4">
+            <div class="h-10 w-10 rounded-full bg-emerald-100 shrink-0"></div>
+            <div>
+              <p class="font-medium text-slate-900">Internal tools</p>
+              <p class="text-sm text-slate-500">Updated yesterday</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

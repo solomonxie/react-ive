@@ -1,0 +1,102 @@
+<!doctype html>
+<!--
+  Lesson 03: Responsive
+  Goal: take lesson 02's nav + sidebar + card-grid layout and make it
+        reflow across breakpoints using sm:/md:/lg: variants — mobile-first,
+        unprefixed utilities apply everywhere, prefixed ones kick in at that
+        breakpoint and up.
+  Run:  make build
+  Open: open 03-responsive.html   (then resize the window, or use devtools'
+        responsive mode, to see it reflow)
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>03 — Responsive</title>
+  <link rel="stylesheet" href="dist/output.css" />
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen">
+  <!-- Nav: stacked on mobile, row from sm: up -->
+  <header class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 bg-white border-b border-slate-200 px-6 py-4">
+    <span class="text-lg font-bold text-slate-900">Lesson 03</span>
+    <nav class="flex gap-4 sm:gap-6 text-sm font-medium text-slate-600">
+      <a href="#" class="text-sky-600">Dashboard</a>
+      <a href="#">Projects</a>
+      <a href="#">Settings</a>
+    </nav>
+  </header>
+
+  <!-- Body: sidebar stacks above content on mobile, sits beside it from md: up -->
+  <div class="flex flex-col md:flex-row">
+    <aside class="w-full md:w-56 md:shrink-0 bg-white border-b md:border-b-0 md:border-r border-slate-200 p-4">
+      <p class="text-xs font-semibold uppercase tracking-wide text-slate-400 mb-3">
+        Sections
+      </p>
+      <ul class="flex flex-row md:flex-col gap-1 text-sm text-slate-700 overflow-x-auto">
+        <li class="rounded px-3 py-2 bg-sky-50 text-sky-700 font-medium whitespace-nowrap">Overview</li>
+        <li class="rounded px-3 py-2 hover:bg-slate-50 whitespace-nowrap">Activity</li>
+        <li class="rounded px-3 py-2 hover:bg-slate-50 whitespace-nowrap">Team</li>
+        <li class="rounded px-3 py-2 hover:bg-slate-50 whitespace-nowrap">Billing</li>
+      </ul>
+    </aside>
+
+    <main class="flex-1 px-4 sm:px-6 lg:px-8 py-8">
+      <h1 class="text-2xl font-bold text-slate-900">Overview</h1>
+      <p class="mt-2 text-slate-600">
+        Resize the window: the card grid goes
+        <code class="text-sky-700">1</code> column on mobile,
+        <code class="text-sky-700">sm:2</code> columns, then
+        <code class="text-sky-700">lg:3</code> columns.
+      </p>
+
+      <!-- Card grid: 1 -> 2 -> 3 columns -->
+      <section class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <article class="bg-white rounded-lg border border-slate-200 p-6">
+          <p class="text-sm text-slate-500">Users</p>
+          <p class="mt-2 text-3xl font-bold text-slate-900">1,204</p>
+        </article>
+
+        <article class="bg-white rounded-lg border border-slate-200 p-6">
+          <p class="text-sm text-slate-500">Revenue</p>
+          <p class="mt-2 text-3xl font-bold text-slate-900">$8,420</p>
+        </article>
+
+        <article class="bg-white rounded-lg border border-slate-200 p-6">
+          <p class="text-sm text-slate-500">Uptime</p>
+          <p class="mt-2 text-3xl font-bold text-slate-900">99.9%</p>
+        </article>
+      </section>
+
+      <!-- Project list: 1 column on mobile, 2 from md: up -->
+      <section class="mt-10">
+        <h2 class="text-xl font-semibold text-slate-800 mb-4">Recent projects</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="flex items-center gap-4 bg-white rounded-lg border border-slate-200 p-4">
+            <div class="h-10 w-10 rounded-full bg-sky-100 shrink-0"></div>
+            <div>
+              <p class="font-medium text-slate-900">Marketing site</p>
+              <p class="text-sm text-slate-500">Updated 2 hours ago</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-4 bg-white rounded-lg border border-slate-200 p-4">
+            <div class="h-10 w-10 rounded-full bg-emerald-100 shrink-0"></div>
+            <div>
+              <p class="font-medium text-slate-900">Internal tools</p>
+              <p class="text-sm text-slate-500">Updated yesterday</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <p class="mt-8 text-xs text-slate-400">
+        Current breakpoint hint —
+        <span class="sm:hidden">base (&lt;640px)</span>
+        <span class="hidden sm:inline md:hidden">sm (&ge;640px)</span>
+        <span class="hidden md:inline lg:hidden">md (&ge;768px)</span>
+        <span class="hidden lg:inline">lg (&ge;1024px)</span>
+      </p>
+    </main>
+  </div>
+</body>
+</html>

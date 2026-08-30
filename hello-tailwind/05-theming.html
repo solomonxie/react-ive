@@ -1,0 +1,82 @@
+<!doctype html>
+<!--
+  Lesson 05: Theming
+  Goal: Tailwind v4's CSS-first theming. src/input.css defines an @theme
+        block (custom brand-* colors, a display font) that generates real
+        utility classes (bg-brand-600, text-brand-700, font-display, ...),
+        plus two @apply-based component classes (.btn-brand, .card-themed)
+        that bundle a repeated utility combo behind one class name.
+  Run:  make build
+  Open: open 05-theming.html
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>05 — Theming</title>
+  <link rel="stylesheet" href="dist/output.css" />
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 min-h-screen">
+  <header class="flex items-center justify-between bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-6 py-4">
+    <span class="text-lg font-bold">Lesson 05</span>
+    <nav class="flex gap-6 text-sm font-medium text-slate-600 dark:text-slate-300">
+      <a href="#" class="text-brand-600 dark:text-brand-300">Dashboard</a>
+      <a href="#" class="hover:text-slate-900 dark:hover:text-white">Projects</a>
+      <a href="#" class="hover:text-slate-900 dark:hover:text-white">Settings</a>
+    </nav>
+  </header>
+
+  <main class="mx-auto max-w-2xl px-6 py-12">
+    <h1 class="font-display text-3xl font-bold text-brand-700 dark:text-brand-300">
+      Custom theme, custom font
+    </h1>
+    <p class="mt-2 text-slate-600 dark:text-slate-400">
+      <code class="text-brand-600 dark:text-brand-300">text-brand-700</code>
+      and
+      <code class="text-brand-600 dark:text-brand-300">font-display</code>
+      don't exist in default Tailwind — they come from the
+      <code class="text-brand-600 dark:text-brand-300">@theme</code> block
+      in <code class="text-brand-600 dark:text-brand-300">src/input.css</code>.
+    </p>
+
+    <!-- Raw utilities built from the custom @theme tokens -->
+    <section class="mt-8 flex flex-wrap gap-3">
+      <span class="rounded-full bg-brand-50 dark:bg-brand-700/20 px-4 py-1.5 text-sm font-medium text-brand-700 dark:text-brand-300 border border-brand-100 dark:border-brand-700">
+        bg-brand-50
+      </span>
+      <span class="rounded-full bg-brand-300 px-4 py-1.5 text-sm font-medium text-brand-700">
+        bg-brand-300
+      </span>
+      <span class="rounded-full bg-brand-500 px-4 py-1.5 text-sm font-medium text-white">
+        bg-brand-500
+      </span>
+      <span class="rounded-full bg-brand-700 px-4 py-1.5 text-sm font-medium text-white">
+        bg-brand-700
+      </span>
+    </section>
+
+    <!-- .btn-brand: an @apply-based component class, used just like any utility -->
+    <section class="mt-10">
+      <h2 class="text-lg font-semibold mb-4">Component classes</h2>
+      <div class="flex flex-wrap items-center gap-4">
+        <button class="btn-brand">Get started</button>
+        <code class="text-sm text-slate-500 dark:text-slate-400">.btn-brand</code>
+      </div>
+    </section>
+
+    <!-- .card-themed: another @apply-based component class -->
+    <section class="mt-8 card-themed">
+      <h2 class="font-display text-xl font-bold text-brand-700 dark:text-brand-300">
+        .card-themed
+      </h2>
+      <p class="mt-2 text-slate-600 dark:text-slate-300">
+        This card's border, background, and dark-mode background all come
+        from one <code class="text-brand-600 dark:text-brand-300">@apply</code>
+        rule in <code class="text-brand-600 dark:text-brand-300">src/input.css</code>,
+        instead of repeating the same five utility classes on every card in
+        this project.
+      </p>
+    </section>
+  </main>
+</body>
+</html>

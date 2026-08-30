@@ -1,0 +1,65 @@
+<!doctype html>
+<!--
+  Lesson 01: Hello World
+  Goal: get Tailwind's compiled stylesheet on the page and use the most
+        basic utility classes — typography, spacing, and color — with no
+        custom CSS of our own.
+  Run:  make build   (compiles src/input.css -> dist/output.css)
+  Open: open 01-hello-world.html
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>01 — Hello World</title>
+  <link rel="stylesheet" href="dist/output.css" />
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen">
+  <main class="mx-auto max-w-2xl px-6 py-16">
+    <p class="text-sm font-medium uppercase tracking-wide text-sky-600">
+      Lesson 01
+    </p>
+
+    <h1 class="mt-2 text-4xl font-bold text-slate-900">
+      Hello, Tailwind!
+    </h1>
+
+    <p class="mt-4 text-lg leading-relaxed text-slate-600">
+      This page has no custom CSS. Every visual choice — the font size, the
+      spacing, the color of each element — comes from utility classes
+      applied directly in the HTML.
+    </p>
+
+    <section class="mt-10 space-y-4">
+      <h2 class="text-xl font-semibold text-slate-800">
+        A few basic utilities
+      </h2>
+
+      <p class="p-4 bg-white rounded-lg border border-slate-200 text-slate-700">
+        <code class="text-sky-700">p-4</code> adds padding,
+        <code class="text-sky-700">rounded-lg</code> rounds the corners, and
+        <code class="text-sky-700">border</code> draws a 1px border.
+      </p>
+
+      <p class="p-4 bg-sky-100 rounded-lg text-sky-900 font-medium">
+        <code class="text-sky-700">bg-sky-100</code> and
+        <code class="text-sky-700">text-sky-900</code> set background and
+        text color from Tailwind's default color palette.
+      </p>
+
+      <p class="p-4 bg-amber-50 border-l-4 border-amber-400 rounded text-amber-800">
+        Utility classes read left to right roughly in the order the browser
+        applies them: layout, box model, then color.
+      </p>
+    </section>
+
+    <div class="mt-10 flex items-center gap-3">
+      <span class="inline-block h-3 w-3 rounded-full bg-emerald-500"></span>
+      <span class="text-sm text-slate-500">
+        Compiled with the Tailwind CLI — no build step beyond
+        <code class="text-slate-700">npm run build</code>.
+      </span>
+    </div>
+  </main>
+</body>
+</html>
