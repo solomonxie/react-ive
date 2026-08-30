@@ -7,7 +7,7 @@ one new concept, and mounts itself.
 ## Setup
 
 ```sh
-cd helloworld
+cd hello-react
 npm install
 npm run dev
 ```
@@ -41,7 +41,7 @@ lesson 01 is used. You can also run `npm run dev` to start lesson 01.
 ## Layout
 
 ```
-helloworld/
+hello-react/
   index.html          # fixed HTML shell
   main.tsx             # loads the lesson selected by the runner
   scripts/run-lesson.mjs
