@@ -1,0 +1,25 @@
+{
+  "name": "hello-svelte",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "lesson": "node scripts/run-lesson.mjs",
+    "build": "svelte-check --tsconfig ./tsconfig.app.json && vite build",
+    "lint": "oxlint",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "svelte": "^5.36.9",
+    "svelte-routing": "^2.13.0"
+  },
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^5.0.4",
+    "@types/node": "^24.13.3",
+    "oxlint": "^1.79.0",
+    "svelte-check": "^4.1.5",
+    "typescript": "~6.0.2",
+    "vite": "^8.2.2"
+  }
+}
