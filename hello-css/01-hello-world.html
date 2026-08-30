@@ -1,0 +1,75 @@
+<!--
+  01 · Hello World — Selectors & the Box Model
+  Goal: see element, class, id, and descendant selectors at work, and make
+        the box model (margin, border, padding, content) visible with color.
+  Open: open 01-hello-world.html directly in a browser, or `make lesson N=01`.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>01 · Hello World</title>
+<style>
+  /* Element selector: applies to every <body>, <h1>, <p> on the page. */
+  body {
+    margin: 0;
+    font-family: system-ui, sans-serif;
+    background: #f5f5f7;
+    color: #1a1a1a;
+  }
+  h1 { color: #2b2d42; }
+  p { line-height: 1.5; }
+
+  main { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
+  section { margin-bottom: 40px; }
+
+  /* Class selector: applies to any element with class="box". */
+  .box {
+    margin: 20px 0;
+    padding: 20px;
+    border: 4px solid #4a4e69;
+    background: #c9ada7;
+  }
+
+  /* Id selector: more specific than .box, so it wins on the shared element. */
+  #featured {
+    border-color: #e63946;
+    background: #f1faee;
+  }
+
+  /* Descendant selector: only <p> elements that live inside a .box. */
+  .box p {
+    margin: 0;
+    color: #22223b;
+    font-weight: 600;
+  }
+</style>
+</head>
+<body>
+<main>
+  <h1>Hello, CSS</h1>
+  <p>This page demonstrates selectors and the box model with real boxes below.</p>
+
+  <section id="selectors">
+    <h2>Selectors</h2>
+    <div class="box">
+      <p>Styled by the <code>.box</code> class selector.</p>
+    </div>
+    <div class="box" id="featured">
+      <p>Styled by <code>.box</code> plus the <code>#featured</code> id selector, which wins on specificity.</p>
+    </div>
+    <div class="box">
+      <p>Also a <code>.box</code> — the rule <code>.box p</code> is a descendant selector reaching this paragraph.</p>
+    </div>
+  </section>
+
+  <section id="box-model">
+    <h2>Box model</h2>
+    <div class="box">
+      <p>Outside-in: margin (space outside, transparent) → border (the colored ring) → padding (space around this text) → content (this text itself).</p>
+    </div>
+  </section>
+</main>
+</body>
+</html>

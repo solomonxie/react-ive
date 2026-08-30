@@ -1,0 +1,209 @@
+<!--
+  04 · Responsive Design
+  Everything from 03-layout-grid.html (selectors, box model, flexbox nav +
+  card row, grid page shell), plus @media breakpoints that reflow the grid
+  and flex layouts for narrow viewports, and relative units.
+  Goal: use rem, %, clamp(), and @media to make the page respond to
+        viewport width instead of breaking on small screens.
+  Open: open 04-responsive.html directly in a browser, or `make lesson N=04`.
+        Try resizing the browser window narrower than 700px.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>04 · Responsive Design</title>
+<style>
+  /* --- from 01/02/03 --- */
+  html { font-size: 16px; }
+  body {
+    margin: 0;
+    font-family: system-ui, sans-serif;
+    background: #f5f5f7;
+    color: #1a1a1a;
+  }
+  /* new in 04: clamp() gives a fluid heading size instead of one fixed px value */
+  h1 { color: #2b2d42; font-size: clamp(1.5rem, 4vw + 1rem, 2.5rem); }
+  p { line-height: 1.5; }
+
+  section { margin-bottom: 2.5rem; }
+
+  .box {
+    margin: 1.25rem 0;
+    padding: 1.25rem;
+    border: 4px solid #4a4e69;
+    background: #c9ada7;
+  }
+
+  #featured {
+    border-color: #e63946;
+    background: #f1faee;
+  }
+
+  .box p {
+    margin: 0;
+    color: #22223b;
+    font-weight: 600;
+  }
+
+  .nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    background: #2b2d42;
+  }
+  .nav .brand {
+    color: #fff;
+    font-weight: 700;
+  }
+  .nav a {
+    color: #c9ada7;
+    text-decoration: none;
+  }
+  .nav a:hover {
+    color: #fff;
+  }
+
+  .card-row {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+  }
+  .card {
+    flex: 1 1 200px;
+    background: #fff;
+    border: 2px solid #4a4e69;
+    border-radius: 8px;
+    padding: 1.25rem;
+  }
+  .card h3 { margin-top: 0; color: #2b2d42; }
+
+  /* new in 04: sidebar width as a %, so it scales with the grid column */
+  .page {
+    display: grid;
+    grid-template-columns: minmax(180px, 25%) 1fr;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas:
+      "header header"
+      "sidebar content"
+      "footer  footer";
+    min-height: 100vh;
+  }
+  .page-header { grid-area: header; }
+  .sidebar {
+    grid-area: sidebar;
+    background: #edede9;
+    padding: 1.25rem;
+  }
+  .sidebar h2 { font-size: 1rem; margin-top: 0; }
+  .sidebar ul { list-style: none; padding: 0; margin: 0; }
+  .sidebar li + li { margin-top: 0.5rem; }
+  .sidebar a { color: #4a4e69; text-decoration: none; }
+  .sidebar a:hover { text-decoration: underline; }
+  .content {
+    grid-area: content;
+    max-width: 800px;
+    padding: 2.5rem 1.25rem;
+  }
+  .page-footer {
+    grid-area: footer;
+    background: #2b2d42;
+    color: #fff;
+    text-align: center;
+    padding: 1rem;
+  }
+
+  /* --- new in 04-responsive.html: reflow for narrow viewports --- */
+  @media (max-width: 700px) {
+    .page {
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        "header"
+        "sidebar"
+        "content"
+        "footer";
+    }
+    .nav {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .card-row {
+      flex-direction: column;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="page-header">
+    <nav class="nav">
+      <span class="brand">CSS Lessons</span>
+      <a href="#selectors">Selectors</a>
+      <a href="#box-model">Box model</a>
+      <a href="#cards">Cards</a>
+    </nav>
+  </header>
+
+  <aside class="sidebar">
+    <h2>On this page</h2>
+    <ul>
+      <li><a href="#selectors">Selectors</a></li>
+      <li><a href="#box-model">Box model</a></li>
+      <li><a href="#cards">Cards</a></li>
+    </ul>
+  </aside>
+
+  <main class="content">
+    <h1>Hello, CSS</h1>
+    <p>Resize the window below 700px: the grid collapses to one column, the nav stacks, and the cards drop into a column too.</p>
+
+    <section id="selectors">
+      <h2>Selectors</h2>
+      <div class="box">
+        <p>Styled by the <code>.box</code> class selector.</p>
+      </div>
+      <div class="box" id="featured">
+        <p>Styled by <code>.box</code> plus the <code>#featured</code> id selector, which wins on specificity.</p>
+      </div>
+      <div class="box">
+        <p>Also a <code>.box</code> — the rule <code>.box p</code> is a descendant selector reaching this paragraph.</p>
+      </div>
+    </section>
+
+    <section id="box-model">
+      <h2>Box model</h2>
+      <div class="box">
+        <p>Outside-in: margin (space outside, transparent) → border (the colored ring) → padding (space around this text) → content (this text itself).</p>
+      </div>
+    </section>
+
+    <section id="cards">
+      <h2>Card row (flexbox)</h2>
+      <div class="card-row">
+        <div class="card">
+          <h3>Card One</h3>
+          <p>A flex item. <code>flex: 1 1 200px</code> lets it grow and shrink from a 200px base.</p>
+        </div>
+        <div class="card">
+          <h3>Card Two</h3>
+          <p><code>gap</code> spaces the cards without extra margin hacks.</p>
+        </div>
+        <div class="card">
+          <h3>Card Three</h3>
+          <p><code>flex-wrap: wrap</code>, and below 700px, <code>flex-direction: column</code>.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="page-footer">
+    <p>hello-css lesson 04 — responsive with @media, rem, %, and clamp()</p>
+  </footer>
+</div>
+</body>
+</html>

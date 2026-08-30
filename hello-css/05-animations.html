@@ -1,0 +1,231 @@
+<!--
+  05 · Transitions & Keyframe Animations
+  Everything from 04-responsive.html (selectors, box model, flexbox,
+  grid shell, responsive breakpoints), plus transition on hover states
+  and a @keyframes animation.
+  Goal: animate a hover state smoothly with transition, and run a looping
+        animation with @keyframes.
+  Open: open 05-animations.html directly in a browser, or `make lesson N=05`.
+        Hover the nav links and cards; watch the "NEW" badge pulse.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>05 · Transitions & Animations</title>
+<style>
+  /* --- from 01/02/03/04 --- */
+  html { font-size: 16px; }
+  body {
+    margin: 0;
+    font-family: system-ui, sans-serif;
+    background: #f5f5f7;
+    color: #1a1a1a;
+  }
+  h1 { color: #2b2d42; font-size: clamp(1.5rem, 4vw + 1rem, 2.5rem); }
+  p { line-height: 1.5; }
+
+  section { margin-bottom: 2.5rem; }
+
+  .box {
+    margin: 1.25rem 0;
+    padding: 1.25rem;
+    border: 4px solid #4a4e69;
+    background: #c9ada7;
+  }
+
+  #featured {
+    border-color: #e63946;
+    background: #f1faee;
+  }
+
+  .box p {
+    margin: 0;
+    color: #22223b;
+    font-weight: 600;
+  }
+
+  .nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    background: #2b2d42;
+  }
+  .nav .brand {
+    color: #fff;
+    font-weight: 700;
+  }
+  /* new in 05: transition makes the hover color change animate instead of snap */
+  .nav a {
+    color: #c9ada7;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+  .nav a:hover {
+    color: #fff;
+  }
+
+  .card-row {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+  }
+  /* new in 05: transition + hover lift for cards */
+  .card {
+    flex: 1 1 200px;
+    background: #fff;
+    border: 2px solid #4a4e69;
+    border-radius: 8px;
+    padding: 1.25rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  }
+  .card h3 { margin-top: 0; color: #2b2d42; }
+
+  .page {
+    display: grid;
+    grid-template-columns: minmax(180px, 25%) 1fr;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas:
+      "header header"
+      "sidebar content"
+      "footer  footer";
+    min-height: 100vh;
+  }
+  .page-header { grid-area: header; }
+  .sidebar {
+    grid-area: sidebar;
+    background: #edede9;
+    padding: 1.25rem;
+  }
+  .sidebar h2 { font-size: 1rem; margin-top: 0; }
+  .sidebar ul { list-style: none; padding: 0; margin: 0; }
+  .sidebar li + li { margin-top: 0.5rem; }
+  .sidebar a { color: #4a4e69; text-decoration: none; }
+  .sidebar a:hover { text-decoration: underline; }
+  .content {
+    grid-area: content;
+    max-width: 800px;
+    padding: 2.5rem 1.25rem;
+  }
+  .page-footer {
+    grid-area: footer;
+    background: #2b2d42;
+    color: #fff;
+    text-align: center;
+    padding: 1rem;
+  }
+
+  @media (max-width: 700px) {
+    .page {
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        "header"
+        "sidebar"
+        "content"
+        "footer";
+    }
+    .nav {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .card-row {
+      flex-direction: column;
+    }
+  }
+
+  /* --- new in 05-animations.html: a looping @keyframes animation --- */
+  .brand-badge {
+    display: inline-block;
+    margin-left: 0.5rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+    background: #e63946;
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    animation: pulse 1.6s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.15); opacity: 0.8; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="page-header">
+    <nav class="nav">
+      <span class="brand">CSS Lessons <span class="brand-badge">NEW</span></span>
+      <a href="#selectors">Selectors</a>
+      <a href="#box-model">Box model</a>
+      <a href="#cards">Cards</a>
+    </nav>
+  </header>
+
+  <aside class="sidebar">
+    <h2>On this page</h2>
+    <ul>
+      <li><a href="#selectors">Selectors</a></li>
+      <li><a href="#box-model">Box model</a></li>
+      <li><a href="#cards">Cards</a></li>
+    </ul>
+  </aside>
+
+  <main class="content">
+    <h1>Hello, CSS</h1>
+    <p>Hover a nav link or a card for a transition. The "NEW" badge above never stops — it's a @keyframes animation.</p>
+
+    <section id="selectors">
+      <h2>Selectors</h2>
+      <div class="box">
+        <p>Styled by the <code>.box</code> class selector.</p>
+      </div>
+      <div class="box" id="featured">
+        <p>Styled by <code>.box</code> plus the <code>#featured</code> id selector, which wins on specificity.</p>
+      </div>
+      <div class="box">
+        <p>Also a <code>.box</code> — the rule <code>.box p</code> is a descendant selector reaching this paragraph.</p>
+      </div>
+    </section>
+
+    <section id="box-model">
+      <h2>Box model</h2>
+      <div class="box">
+        <p>Outside-in: margin (space outside, transparent) → border (the colored ring) → padding (space around this text) → content (this text itself).</p>
+      </div>
+    </section>
+
+    <section id="cards">
+      <h2>Card row (flexbox)</h2>
+      <div class="card-row">
+        <div class="card">
+          <h3>Card One</h3>
+          <p>Hover me — <code>transition: transform, box-shadow</code> animates the lift.</p>
+        </div>
+        <div class="card">
+          <h3>Card Two</h3>
+          <p><code>gap</code> spaces the cards without extra margin hacks.</p>
+        </div>
+        <div class="card">
+          <h3>Card Three</h3>
+          <p><code>flex-wrap: wrap</code>, and below 700px, <code>flex-direction: column</code>.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="page-footer">
+    <p>hello-css lesson 05 — transitions on hover, @keyframes on the badge</p>
+  </footer>
+</div>
+</body>
+</html>

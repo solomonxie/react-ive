@@ -1,0 +1,137 @@
+<!--
+  02 · Flexbox Layout
+  Everything from 01-hello-world.html (selectors, box model), plus a
+  flexbox nav bar and a flexbox card row.
+  Goal: lay out elements in a row with display: flex, justify-content,
+        align-items, and gap.
+  Open: open 02-layout-flexbox.html directly in a browser, or `make lesson N=02`.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>02 · Flexbox Layout</title>
+<style>
+  /* --- from 01-hello-world.html --- */
+  body {
+    margin: 0;
+    font-family: system-ui, sans-serif;
+    background: #f5f5f7;
+    color: #1a1a1a;
+  }
+  h1 { color: #2b2d42; }
+  p { line-height: 1.5; }
+
+  main { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
+  section { margin-bottom: 40px; }
+
+  .box {
+    margin: 20px 0;
+    padding: 20px;
+    border: 4px solid #4a4e69;
+    background: #c9ada7;
+  }
+
+  #featured {
+    border-color: #e63946;
+    background: #f1faee;
+  }
+
+  .box p {
+    margin: 0;
+    color: #22223b;
+    font-weight: 600;
+  }
+
+  /* --- new in 02-layout-flexbox.html: flexbox nav bar --- */
+  .nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 20px;
+    background: #2b2d42;
+  }
+  .nav .brand {
+    color: #fff;
+    font-weight: 700;
+  }
+  .nav a {
+    color: #c9ada7;
+    text-decoration: none;
+  }
+  .nav a:hover {
+    color: #fff;
+  }
+
+  /* --- new in 02-layout-flexbox.html: flexbox card row --- */
+  .card-row {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .card {
+    flex: 1 1 200px;
+    background: #fff;
+    border: 2px solid #4a4e69;
+    border-radius: 8px;
+    padding: 20px;
+  }
+  .card h3 { margin-top: 0; color: #2b2d42; }
+</style>
+</head>
+<body>
+<nav class="nav">
+  <span class="brand">CSS Lessons</span>
+  <a href="#selectors">Selectors</a>
+  <a href="#box-model">Box model</a>
+  <a href="#cards">Cards</a>
+</nav>
+
+<main>
+  <h1>Hello, CSS</h1>
+  <p>This page demonstrates selectors and the box model with real boxes below, plus a flexbox nav bar and card row.</p>
+
+  <section id="selectors">
+    <h2>Selectors</h2>
+    <div class="box">
+      <p>Styled by the <code>.box</code> class selector.</p>
+    </div>
+    <div class="box" id="featured">
+      <p>Styled by <code>.box</code> plus the <code>#featured</code> id selector, which wins on specificity.</p>
+    </div>
+    <div class="box">
+      <p>Also a <code>.box</code> — the rule <code>.box p</code> is a descendant selector reaching this paragraph.</p>
+    </div>
+  </section>
+
+  <section id="box-model">
+    <h2>Box model</h2>
+    <div class="box">
+      <p>Outside-in: margin (space outside, transparent) → border (the colored ring) → padding (space around this text) → content (this text itself).</p>
+    </div>
+  </section>
+
+  <section id="cards">
+    <h2>Card row (flexbox)</h2>
+    <div class="card-row">
+      <div class="card">
+        <h3>Card One</h3>
+        <p>A flex item. <code>flex: 1 1 200px</code> lets it grow and shrink from a 200px base.</p>
+      </div>
+      <div class="card">
+        <h3>Card Two</h3>
+        <p><code>gap: 20px</code> spaces the cards without extra margin hacks.</p>
+      </div>
+      <div class="card">
+        <h3>Card Three</h3>
+        <p><code>flex-wrap: wrap</code> lets cards drop to a new line on narrow screens.</p>
+      </div>
+    </div>
+  </section>
+</main>
+</body>
+</html>

@@ -1,0 +1,187 @@
+<!--
+  03 · CSS Grid Layout
+  Everything from 02-layout-flexbox.html (selectors, box model, flexbox
+  nav + card row), plus a CSS Grid page shell: header / sidebar / content
+  / footer.
+  Goal: lay out a whole page with display: grid, grid-template-columns,
+        and grid-template-areas.
+  Open: open 03-layout-grid.html directly in a browser, or `make lesson N=03`.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>03 · CSS Grid Layout</title>
+<style>
+  /* --- from 01/02 --- */
+  body {
+    margin: 0;
+    font-family: system-ui, sans-serif;
+    background: #f5f5f7;
+    color: #1a1a1a;
+  }
+  h1 { color: #2b2d42; }
+  p { line-height: 1.5; }
+
+  section { margin-bottom: 40px; }
+
+  .box {
+    margin: 20px 0;
+    padding: 20px;
+    border: 4px solid #4a4e69;
+    background: #c9ada7;
+  }
+
+  #featured {
+    border-color: #e63946;
+    background: #f1faee;
+  }
+
+  .box p {
+    margin: 0;
+    color: #22223b;
+    font-weight: 600;
+  }
+
+  .nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 20px;
+    background: #2b2d42;
+  }
+  .nav .brand {
+    color: #fff;
+    font-weight: 700;
+  }
+  .nav a {
+    color: #c9ada7;
+    text-decoration: none;
+  }
+  .nav a:hover {
+    color: #fff;
+  }
+
+  .card-row {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .card {
+    flex: 1 1 200px;
+    background: #fff;
+    border: 2px solid #4a4e69;
+    border-radius: 8px;
+    padding: 20px;
+  }
+  .card h3 { margin-top: 0; color: #2b2d42; }
+
+  /* --- new in 03-layout-grid.html: page shell built with CSS Grid --- */
+  .page {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas:
+      "header header"
+      "sidebar content"
+      "footer  footer";
+    min-height: 100vh;
+  }
+  .page-header { grid-area: header; }
+  .sidebar {
+    grid-area: sidebar;
+    background: #edede9;
+    padding: 20px;
+  }
+  .sidebar h2 { font-size: 1rem; margin-top: 0; }
+  .sidebar ul { list-style: none; padding: 0; margin: 0; }
+  .sidebar li + li { margin-top: 8px; }
+  .sidebar a { color: #4a4e69; text-decoration: none; }
+  .sidebar a:hover { text-decoration: underline; }
+  .content {
+    grid-area: content;
+    max-width: 800px;
+    padding: 40px 20px;
+  }
+  .page-footer {
+    grid-area: footer;
+    background: #2b2d42;
+    color: #fff;
+    text-align: center;
+    padding: 16px;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="page-header">
+    <nav class="nav">
+      <span class="brand">CSS Lessons</span>
+      <a href="#selectors">Selectors</a>
+      <a href="#box-model">Box model</a>
+      <a href="#cards">Cards</a>
+    </nav>
+  </header>
+
+  <aside class="sidebar">
+    <h2>On this page</h2>
+    <ul>
+      <li><a href="#selectors">Selectors</a></li>
+      <li><a href="#box-model">Box model</a></li>
+      <li><a href="#cards">Cards</a></li>
+    </ul>
+  </aside>
+
+  <main class="content">
+    <h1>Hello, CSS</h1>
+    <p>The whole page is now a CSS Grid shell: header across the top, a sidebar, this content column, and a footer.</p>
+
+    <section id="selectors">
+      <h2>Selectors</h2>
+      <div class="box">
+        <p>Styled by the <code>.box</code> class selector.</p>
+      </div>
+      <div class="box" id="featured">
+        <p>Styled by <code>.box</code> plus the <code>#featured</code> id selector, which wins on specificity.</p>
+      </div>
+      <div class="box">
+        <p>Also a <code>.box</code> — the rule <code>.box p</code> is a descendant selector reaching this paragraph.</p>
+      </div>
+    </section>
+
+    <section id="box-model">
+      <h2>Box model</h2>
+      <div class="box">
+        <p>Outside-in: margin (space outside, transparent) → border (the colored ring) → padding (space around this text) → content (this text itself).</p>
+      </div>
+    </section>
+
+    <section id="cards">
+      <h2>Card row (flexbox)</h2>
+      <div class="card-row">
+        <div class="card">
+          <h3>Card One</h3>
+          <p>A flex item. <code>flex: 1 1 200px</code> lets it grow and shrink from a 200px base.</p>
+        </div>
+        <div class="card">
+          <h3>Card Two</h3>
+          <p><code>gap: 20px</code> spaces the cards without extra margin hacks.</p>
+        </div>
+        <div class="card">
+          <h3>Card Three</h3>
+          <p><code>flex-wrap: wrap</code> lets cards drop to a new line on narrow screens.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="page-footer">
+    <p>hello-css lesson 03 — CSS Grid page shell</p>
+  </footer>
+</div>
+</body>
+</html>
