@@ -1,0 +1,45 @@
+<!doctype html>
+<!--
+  Out-of-Band Swaps — hx-swap-oob updating a second region from one response.
+  Goal: see a single server response update two unrelated parts of the page
+        at once: the main target, plus an out-of-band element by id.
+  Run:  cd hello-htmx && make dev
+  Open: http://localhost:3000/05-out-of-band-swaps.html
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>05 — Out-of-Band Swaps</title>
+  <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 40rem; margin: 3rem auto; padding: 0 1rem; }
+    header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 1rem; border-bottom: 1px solid #ddd; }
+    #notif-count { padding: 0.15rem 0.5rem; border-radius: 999px; background: #333; color: #fff; font-size: 0.85rem; }
+    #notifications { margin-top: 1rem; padding-left: 1.25rem; }
+  </style>
+</head>
+<body>
+  <p><a href="/">&larr; back to menu</a></p>
+  <h1>05 — Out-of-Band Swaps</h1>
+
+  <header>
+    <strong>Inbox</strong>
+    <span id="notif-count">0 unread</span>
+  </header>
+
+  <p>
+    Clicking the button posts to <code>POST /api/notify</code>. The server
+    returns two things in one response: a new <code>&lt;li&gt;</code> for the
+    list below (the normal <code>hx-target</code> swap), and an
+    <code>hx-swap-oob="true"</code> fragment carrying a fresh
+    <code>#notif-count</code> badge, which htmx swaps into place out of band
+    &mdash; no matter where <code>#notif-count</code> lives in the page.
+  </p>
+
+  <button hx-post="/api/notify" hx-target="#notifications" hx-swap="beforeend">
+    Send yourself a notification
+  </button>
+
+  <ul id="notifications"></ul>
+</body>
+</html>

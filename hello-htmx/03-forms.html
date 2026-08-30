@@ -1,0 +1,43 @@
+<!doctype html>
+<!--
+  Forms — hx-post form submission with server-side validation.
+  Goal: submit a form without a page reload, and re-render it with errors
+        or a success state, all decided by the server.
+  Run:  cd hello-htmx && make dev
+  Open: http://localhost:3000/03-forms.html
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>03 — Forms</title>
+  <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 40rem; margin: 3rem auto; padding: 0 1rem; }
+    label { display: block; margin-top: 0.75rem; font-weight: 600; }
+    input { padding: 0.4rem; width: 100%; box-sizing: border-box; }
+    .error { color: #b00020; margin: 0.25rem 0 0; font-size: 0.9rem; }
+    .success { color: #0a7a2f; }
+    button { margin-top: 1rem; }
+  </style>
+</head>
+<body>
+  <p><a href="/">&larr; back to menu</a></p>
+  <h1>03 — Forms</h1>
+  <p>
+    Submitting posts to <code>POST /api/subscribe</code>. The server validates
+    the fields and returns either the form again with inline error messages,
+    or a success message, which replaces <code>#subscribe-form</code>
+    (<code>hx-swap="outerHTML"</code>) so the response fully owns this region.
+  </p>
+
+  <form id="subscribe-form" hx-post="/api/subscribe" hx-target="#subscribe-form" hx-swap="outerHTML">
+    <label for="name">Name</label>
+    <input type="text" id="name" name="name" />
+
+    <label for="email">Email</label>
+    <input type="text" id="email" name="email" />
+
+    <button type="submit">Subscribe</button>
+  </form>
+</body>
+</html>

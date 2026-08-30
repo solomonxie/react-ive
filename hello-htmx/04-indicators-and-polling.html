@@ -1,0 +1,70 @@
+<!doctype html>
+<!--
+  Indicators and Polling — the htmx-indicator loading class, and
+  hx-trigger="every ..." for repeated requests.
+  Goal: show visual feedback while a request is in flight, and keep a region
+        fresh on a timer without any client-side JavaScript.
+  Run:  cd hello-htmx && make dev
+  Open: http://localhost:3000/04-indicators-and-polling.html
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>04 — Indicators and Polling</title>
+  <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 40rem; margin: 3rem auto; padding: 0 1rem; }
+    section { margin-bottom: 2.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid #ddd; }
+
+    /* htmx toggles the "htmx-request" class on the element (or its
+       hx-indicator target) while a request is in flight. Elements with
+       class "htmx-indicator" are hidden by default and shown only then. */
+    .htmx-indicator { opacity: 0; transition: opacity 200ms ease-in; }
+    .htmx-request .htmx-indicator,
+    .htmx-request.htmx-indicator { opacity: 1; }
+
+    .spinner {
+      display: inline-block;
+      width: 1rem; height: 1rem;
+      border: 2px solid #ccc;
+      border-top-color: #333;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+      margin-left: 0.5rem;
+      vertical-align: middle;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    #status-box { margin-top: 0.5rem; padding: 0.75rem; border: 1px solid #ccc; border-radius: 6px; }
+  </style>
+</head>
+<body>
+  <p><a href="/">&larr; back to menu</a></p>
+  <h1>04 — Indicators and Polling</h1>
+
+  <section>
+    <h2>Loading indicator</h2>
+    <p>
+      <code>/api/slow</code> deliberately takes a second to respond, so the
+      spinner (an <code>htmx-indicator</code> element) is visible while it's
+      in flight.
+    </p>
+    <button hx-get="/api/slow" hx-target="#slow-result" hx-indicator="#slow-spinner">
+      Fetch slow data
+      <span id="slow-spinner" class="spinner htmx-indicator"></span>
+    </button>
+    <div id="slow-result">No data fetched yet.</div>
+  </section>
+
+  <section>
+    <h2>Polling</h2>
+    <p>
+      <code>hx-trigger="every 2s"</code> re-issues <code>GET /api/status</code>
+      on its own timer, forever, keeping this box fresh.
+    </p>
+    <div id="status-box" hx-get="/api/status" hx-trigger="every 2s" hx-swap="innerHTML">
+      Waiting for first poll&hellip;
+    </div>
+  </section>
+</body>
+</html>

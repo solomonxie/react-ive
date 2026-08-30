@@ -1,0 +1,74 @@
+<!doctype html>
+<!--
+  Triggers and Targets — hx-trigger conditions, hx-target, and hx-swap variants.
+  Goal: control WHEN a request fires, WHERE the response lands, and HOW it's inserted.
+  Run:  cd hello-htmx && make dev
+  Open: http://localhost:3000/02-triggers-and-targets.html
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>02 — Triggers and Targets</title>
+  <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 40rem; margin: 3rem auto; padding: 0 1rem; }
+    section { margin-bottom: 2.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid #ddd; }
+    input[type="text"] { padding: 0.4rem; width: 100%; box-sizing: border-box; }
+    #search-results { margin-top: 0.5rem; }
+    #search-results ul { padding-left: 1.25rem; }
+    .card { padding: 0.75rem; border: 1px solid #ccc; border-radius: 6px; margin-top: 0.5rem; }
+    #log-list { padding-left: 1.25rem; }
+  </style>
+</head>
+<body>
+  <p><a href="/">&larr; back to menu</a></p>
+  <h1>02 — Triggers and Targets</h1>
+
+  <section>
+    <h2>hx-trigger: live search (innerHTML swap)</h2>
+    <p>
+      <code>hx-trigger="keyup changed delay:500ms"</code> waits for the user to
+      stop typing before firing <code>GET /api/search</code>. The response
+      replaces the contents of <code>#search-results</code>.
+    </p>
+    <input
+      type="text"
+      name="q"
+      placeholder="Search for a robotics part..."
+      hx-get="/api/search"
+      hx-trigger="keyup changed delay:500ms, search"
+      hx-target="#search-results"
+      hx-swap="innerHTML"
+    />
+    <div id="search-results">Type to search&hellip;</div>
+  </section>
+
+  <section>
+    <h2>hx-swap="outerHTML": replace an element with itself</h2>
+    <p>
+      The button below replaces its own <code>&lt;div class="card"&gt;</code>
+      wrapper entirely with what the server returns.
+    </p>
+    <div class="card" id="refresh-card">
+      <p>This card was rendered once, on page load.</p>
+      <button hx-get="/api/card" hx-target="#refresh-card" hx-swap="outerHTML">
+        Replace this whole card
+      </button>
+    </div>
+  </section>
+
+  <section>
+    <h2>hx-swap="beforeend": append without replacing</h2>
+    <p>
+      Each click appends a new <code>&lt;li&gt;</code> to the end of the list
+      below, instead of replacing what's already there.
+    </p>
+    <button hx-get="/api/log-entry" hx-target="#log-list" hx-swap="beforeend">
+      Add log entry
+    </button>
+    <ul id="log-list">
+      <li>Log started.</li>
+    </ul>
+  </section>
+</body>
+</html>

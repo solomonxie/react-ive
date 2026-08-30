@@ -1,0 +1,47 @@
+<!doctype html>
+<!--
+  Lesson menu — links to each standalone HTMX lesson page.
+  Goal: pick an entry point into the progressive HTMX path.
+  Run:  cd hello-htmx && make dev   (or: npm start)
+  Open: http://localhost:3000/
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>HTMX from Scratch</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 40rem; margin: 3rem auto; padding: 0 1rem; }
+    h1 { margin-bottom: 0.25rem; }
+    ol { padding-left: 1.25rem; }
+    li { margin-bottom: 0.75rem; }
+    a { font-weight: 600; }
+    p.desc { margin: 0.15rem 0 0; color: #555; }
+  </style>
+</head>
+<body>
+  <h1>HTMX from Scratch</h1>
+  <p>A progressive path through HTMX: driving the DOM with HTML attributes and server responses instead of client-side JavaScript.</p>
+  <ol>
+    <li>
+      <a href="/01-hello-world.html">01 — Hello World</a>
+      <p class="desc">Loading htmx, a first <code>hx-get</code> swap.</p>
+    </li>
+    <li>
+      <a href="/02-triggers-and-targets.html">02 — Triggers and Targets</a>
+      <p class="desc"><code>hx-trigger</code>, <code>hx-target</code>, and <code>hx-swap</code> variants.</p>
+    </li>
+    <li>
+      <a href="/03-forms.html">03 — Forms</a>
+      <p class="desc"><code>hx-post</code> form submission with server-side validation.</p>
+    </li>
+    <li>
+      <a href="/04-indicators-and-polling.html">04 — Indicators and Polling</a>
+      <p class="desc">Loading indicators and <code>hx-trigger="every 2s"</code> polling.</p>
+    </li>
+    <li>
+      <a href="/05-out-of-band-swaps.html">05 — Out-of-Band Swaps</a>
+      <p class="desc"><code>hx-swap-oob</code> updating a second region from one response.</p>
+    </li>
+  </ol>
+</body>
+</html>
