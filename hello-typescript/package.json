@@ -1,0 +1,17 @@
+{
+  "name": "hello-typescript",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "lesson": "node scripts/run-lesson.mjs",
+    "typecheck": "tsc --noEmit",
+    "lint": "oxlint"
+  },
+  "devDependencies": {
+    "@types/node": "^24.13.3",
+    "oxlint": "^1.79.0",
+    "tsx": "^4.23.13",
+    "typescript": "~6.0.2"
+  }
+}
