@@ -1,0 +1,66 @@
+# 03. Several jobs: parallel, in order, and as a matrix
+#
+# Jobs run in parallel on separate runners unless one `needs` another.
+# Separate jobs mean separate checkmarks on the pull request, so you can see
+# at a glance whether lint or tests failed. The cost: each job installs again.
+#
+# A matrix runs the same job once per value, here once per Node version.
+
+name: 03 jobs, needs and matrix
+
+on:
+  pull_request:
+
+defaults:
+  run:
+    working-directory: hello-github-ci/app
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+        with:
+          package_json_file: hello-github-ci/app/package.json
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: hello-github-ci/app/.nvmrc
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      # By default one failing version cancels the others. Off, you see all results.
+      fail-fast: false
+      matrix:
+        node: [24, 26]
+    name: test (node ${{ matrix.node }})
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+        with:
+          package_json_file: hello-github-ci/app/package.json
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ matrix.node }}
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test
+
+  # Runs only after both lint and every matrix copy of test pass.
+  build:
+    needs: [lint, test]
+    runs-on: ubuntu-latest
+    # A job that hangs would otherwise burn up to 6 hours of runner time.
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+        with:
+          package_json_file: hello-github-ci/app/package.json
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: hello-github-ci/app/.nvmrc
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build

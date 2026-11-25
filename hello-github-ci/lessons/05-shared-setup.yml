@@ -1,0 +1,38 @@
+# 05. Stop repeating yourself: a composite action
+#
+# Lesson 03 repeated checkout + pnpm + Node + install in every job. Once a
+# repo has ten jobs, that's ten copies to keep in sync. A composite action
+# (../actions/setup/action.yml) bundles those steps under one name.
+#
+# A local action is referenced by its path from the repo root, and the code
+# must be checked out first, so actions/checkout still comes before it.
+#
+# It takes an input: `filter` installs only one package and the packages it
+# depends on (pnpm's `...` suffix, see hello-pnpm). A job that only tests the
+# web app doesn't need everything else installed.
+
+name: 05 shared setup (composite action)
+
+on:
+  pull_request:
+
+defaults:
+  run:
+    working-directory: hello-github-ci/app
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./hello-github-ci/actions/setup
+      - run: pnpm lint
+
+  test-web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./hello-github-ci/actions/setup
+        with:
+          filter: "@sample/web..."
+      - run: pnpm --filter "@sample/web..." test

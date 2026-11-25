@@ -1,0 +1,35 @@
+# 08 (part 2 of 2). Calling a reusable workflow
+#
+# A job that calls a reusable workflow has `uses:` instead of `runs-on:` and
+# `steps:`. With a matrix it calls it once per package. A later job reads the
+# called workflow's outputs through `needs`, like any other job.
+
+name: 08 release
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-web:
+    uses: ./.github/workflows/08-build-package.yml
+    with:
+      package: "@sample/web"
+    # Passes every secret this repo has. Name them one by one to pass fewer.
+    secrets: inherit
+
+  build-each:
+    strategy:
+      matrix:
+        package: ["@sample/common", "@sample/web"]
+    uses: ./.github/workflows/08-build-package.yml
+    with:
+      package: ${{ matrix.package }}
+
+  report:
+    needs: build-web
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Built web at version ${{ needs.build-web.outputs.version }}"

@@ -1,0 +1,14 @@
+[
+  {
+    "title": "Home",
+    "path": "/home"
+  },
+  {
+    "title": "Sign up",
+    "path": "/sign-up"
+  },
+  {
+    "title": "Pricing & plans",
+    "path": "/pricing-plans"
+  }
+]

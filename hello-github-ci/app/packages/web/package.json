@@ -1,0 +1,14 @@
+{
+  "name": "@sample/web",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test",
+    "build": "node -e \"console.log('built @sample/web')\"",
+    "generate": "node scripts/generate-routes.js"
+  },
+  "dependencies": {
+    "@sample/common": "workspace:*"
+  }
+}

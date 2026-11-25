@@ -1,0 +1,50 @@
+# A composite action: several steps bundled under one name, so every job can
+# say `uses: ./hello-github-ci/actions/setup` instead of repeating them.
+# Lesson 05 explains it. Large repos keep these under .github/actions/.
+
+name: Set up the sample app
+description: Install pnpm and Node, restore the pnpm store cache, and install packages
+
+inputs:
+  filter:
+    description: Optional pnpm --filter to install only part of the workspace, e.g. "@sample/web..."
+    required: false
+    default: ""
+
+runs:
+  using: composite
+  steps:
+    - uses: pnpm/action-setup@v6
+      with:
+        package_json_file: hello-github-ci/app/package.json
+
+    - uses: actions/setup-node@v7
+      with:
+        node-version-file: hello-github-ci/app/.nvmrc
+
+    # Steps in a composite action must say which shell they use.
+    - name: Find the pnpm store
+      id: store
+      shell: bash
+      working-directory: hello-github-ci/app
+      run: echo "path=$(pnpm store path --silent)" >> "$GITHUB_OUTPUT"
+
+    # Restore only. One job on main saves the cache (lesson 07).
+    - uses: actions/cache/restore@v6
+      with:
+        path: ${{ steps.store.outputs.path }}
+        key: pnpm-store-${{ runner.os }}-${{ hashFiles('hello-github-ci/app/pnpm-lock.yaml') }}
+        restore-keys: |
+          pnpm-store-${{ runner.os }}-
+
+    - name: Install packages
+      shell: bash
+      working-directory: hello-github-ci/app
+      env:
+        FILTER: ${{ inputs.filter }}
+      run: |
+        if [ -n "$FILTER" ]; then
+          pnpm install --frozen-lockfile --filter "$FILTER"
+        else
+          pnpm install --frozen-lockfile
+        fi

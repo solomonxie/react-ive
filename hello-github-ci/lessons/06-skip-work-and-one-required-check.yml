@@ -1,0 +1,88 @@
+# 06. Skip work that isn't needed, but keep one check to require
+#
+# Branch protection can require checks to pass before merging. Two problems:
+# - Requiring every job by name means updating settings each time a job is
+#   added or renamed.
+# - If a job is skipped (say, a docs-only change), GitHub treats a skipped
+#   required check as passed, but a workflow that never started at all (because
+#   of `paths-ignore`) leaves the check "waiting" forever.
+#
+# The usual fix: the workflow always runs, a first job decides what changed,
+# expensive jobs skip themselves, and one last job ("CI passed") sums it all
+# up. Branch protection requires only that one.
+
+name: 06 skip work, one required check
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    working-directory: hello-github-ci/app
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    # A job output: other jobs read it as needs.changes.outputs.code
+    outputs:
+      code: ${{ steps.filter.outputs.code }}
+    steps:
+      - uses: actions/checkout@v7
+      - id: filter
+        uses: dorny/paths-filter@v4
+        with:
+          # `every`: a file counts only if it matches all patterns, so this
+          # means "a changed file that is not markdown".
+          predicate-quantifier: every
+          filters: |
+            code:
+              - "hello-github-ci/app/**"
+              - "!**/*.md"
+
+  test:
+    needs: changes
+    if: needs.changes.outputs.code == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./hello-github-ci/actions/setup
+      - run: pnpm test
+
+  # Only test what a pull request touched. pnpm's `...[origin/master]` picks
+  # packages changed since that commit plus everything that depends on them.
+  test-affected:
+    needs: changes
+    if: needs.changes.outputs.code == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          # The default is a shallow clone of one commit; comparing needs history.
+          fetch-depth: 0
+      - uses: ./hello-github-ci/actions/setup
+      - env:
+          BASE: origin/${{ github.base_ref }}
+        run: pnpm --filter "...[$BASE]" test
+
+  ci-passed:
+    name: CI passed
+    needs: [changes, test, test-affected]
+    # always(): run even when a needed job failed, or it would be skipped,
+    # and a skipped required check counts as passing.
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fail if any job failed or was cancelled
+        env:
+          RESULTS: ${{ join(needs.*.result, ' ') }}
+        run: |
+          echo "job results: $RESULTS"
+          case " $RESULTS " in
+            *" failure "*|*" cancelled "*) exit 1 ;;
+          esac

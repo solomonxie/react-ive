@@ -1,0 +1,53 @@
+# 08 (part 1 of 2). A reusable workflow
+#
+# A composite action (lesson 05) bundles steps. A reusable workflow bundles
+# whole jobs: a file with `on: workflow_call` that other workflows call like a
+# function, with inputs, secrets and outputs. Large repos often have one
+# "build and publish" workflow and call it once per service instead of
+# copying it. Part 2 (08-release.yml) is the caller.
+#
+# Called workflows must live in .github/workflows/ of a repo.
+
+name: 08 build package (reusable)
+
+on:
+  workflow_call:
+    inputs:
+      package:
+        description: The package to build, e.g. @sample/web
+        type: string
+        required: true
+    secrets:
+      # Callers pass this explicitly, or hand over all of theirs with `secrets: inherit`.
+      DEPLOY_TOKEN:
+        required: false
+    outputs:
+      version:
+        description: The version that was built
+        value: ${{ jobs.build.outputs.version }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    defaults:
+      run:
+        working-directory: hello-github-ci/app
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./hello-github-ci/actions/setup
+      - env:
+          PACKAGE: ${{ inputs.package }}
+        run: pnpm --filter "$PACKAGE..." build
+      - id: version
+        run: echo "version=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
+      - name: Deploy only when a token was passed
+        env:
+          DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+        run: |
+          if [ -z "$DEPLOY_TOKEN" ]; then
+            echo "No token passed, so this is a dry run."
+          else
+            echo "Would deploy here."
+          fi

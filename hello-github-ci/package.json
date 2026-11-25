@@ -1,0 +1,14 @@
+{
+  "name": "hello-github-ci",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "validate": "node scripts/validate.mjs",
+    "try": "node scripts/try-lesson.mjs"
+  },
+  "devDependencies": {
+    "@action-validator/cli": "0.6.0",
+    "@action-validator/core": "0.6.0"
+  }
+}

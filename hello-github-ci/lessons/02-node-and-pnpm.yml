@@ -1,0 +1,42 @@
+# 02. Install Node and pnpm, then lint, test and build
+#
+# The runner has some Node, but not the one you asked for. Pin both:
+# - pnpm/action-setup reads the `packageManager` field ("pnpm@12.23.0") from
+#   package.json, so CI and your laptop use the same pnpm.
+# - actions/setup-node reads .nvmrc, so there's one place to change Node.
+#
+# `--frozen-lockfile` makes install fail if package.json and pnpm-lock.yaml
+# disagree, instead of quietly updating the lockfile on the runner. pnpm
+# already does this when it sees CI=true, but writing it out makes it clear.
+
+name: 02 node and pnpm
+
+on:
+  pull_request:
+
+# Every `run:` step below runs inside the sample app.
+defaults:
+  run:
+    working-directory: hello-github-ci/app
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: pnpm/action-setup@v6
+        with:
+          package_json_file: hello-github-ci/app/package.json
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: hello-github-ci/app/.nvmrc
+          # The simple way to cache the pnpm store. Lesson 07 does it by hand.
+          cache: pnpm
+          cache-dependency-path: hello-github-ci/app/pnpm-lock.yaml
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm test
+      - run: pnpm build

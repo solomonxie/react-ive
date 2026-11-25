@@ -1,0 +1,35 @@
+# 01. A first workflow
+#
+# A workflow is a YAML file in .github/workflows/ at the root of a repo.
+# GitHub reads `on:` to decide when to run it, then runs each job on a fresh
+# virtual machine (a "runner"). A job is a list of steps; a step either runs
+# shell commands (`run:`) or uses a ready-made action (`uses:`).
+#
+# Nothing is on the runner at the start, not even your code, which is why
+# almost every job begins with actions/checkout.
+
+name: 01 first workflow
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  hello:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get the code
+        uses: actions/checkout@v7
+
+      - name: Look around
+        run: |
+          echo "Event: ${{ github.event_name }}, ref: ${{ github.ref }}"
+          node --version
+          ls hello-github-ci/app
+
+      # `${{ ... }}` is an expression GitHub fills in before the shell runs.
+      # `env:` is the safer way to hand values to a script (see lesson 09).
+      - name: Use an env var
+        env:
+          GREETING: Hello from ${{ runner.os }}
+        run: echo "$GREETING"

@@ -1,0 +1,60 @@
+# 07. Caching by hand, and checking generated files
+#
+# Part 1: cache.
+# setup-node's `cache: pnpm` (lesson 02) saves the store after every job that
+# installs. In a monorepo where jobs install only part of the workspace
+# (lesson 05's `filter`), a job can save an incomplete store, and every later
+# job restores that incomplete one. A common fix:
+# - every job only restores (actions/cache/restore, in the composite action)
+# - one job, only on main, installs everything and saves (actions/cache/save)
+# Caches saved by a pull request are only visible to that pull request, so
+# saving there is wasted work anyway.
+#
+# The key includes a hash of the lockfile. `restore-keys` is a prefix to fall
+# back on, so after a dependency change you restore the last store and only
+# download what's new.
+#
+# Part 2: generated files.
+# Some files are written by a script and committed (API types, GraphQL code,
+# here generated/routes.json). If someone changes the source but forgets to
+# run the script, the two drift apart. CI runs the script again and fails if
+# git sees any change.
+
+name: 07 cache and generated files
+
+on:
+  pull_request:
+  push:
+    branches: [master, main]
+
+defaults:
+  run:
+    working-directory: hello-github-ci/app
+
+jobs:
+  save-cache:
+    if: github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./hello-github-ci/actions/setup
+      - id: store
+        run: echo "path=$(pnpm store path --silent)" >> "$GITHUB_OUTPUT"
+      - uses: actions/cache/save@v6
+        with:
+          path: ${{ steps.store.outputs.path }}
+          key: pnpm-store-${{ runner.os }}-${{ hashFiles('hello-github-ci/app/pnpm-lock.yaml') }}
+
+  generated-files:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./hello-github-ci/actions/setup
+      - run: pnpm generate
+      - name: Fail if generated files are out of date
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            git --no-pager diff
+            echo "::error::Generated files are out of date. Run 'pnpm generate' and commit the result."
+            exit 1
+          fi

@@ -1,0 +1,30 @@
+# 10. Dependabot: pull requests that keep dependencies up to date
+#
+# This one is not a workflow. It's .github/dependabot.yml, a config file
+# GitHub reads on a schedule. Dependabot then opens pull requests that bump
+# versions, and your normal CI (lessons 02-07) checks them like any other PR.
+#
+# This repo already gets Dependabot security PRs (see the vite and
+# source-map-js bumps in git log). The config below adds regular version
+# updates, groups small bumps into one PR, and keeps the pinned action SHAs
+# from lesson 09 current.
+#
+# To try it, copy this file to .github/dependabot.yml (not .github/workflows/).
+
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /hello-github-ci/app
+    schedule:
+      interval: weekly
+    groups:
+      # One PR for all minor and patch bumps instead of one PR each.
+      minor-and-patch:
+        update-types: [minor, patch]
+
+  # Updates `uses:` lines in workflows, including SHA pins (it updates the
+  # version comment too).
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
