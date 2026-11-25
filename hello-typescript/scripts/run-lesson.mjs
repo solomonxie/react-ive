@@ -11,13 +11,18 @@ const lessons = {
   '06': '06-classes.ts',
   '07': '07-utility-types.ts',
   '08': '08-async-and-modules.ts',
+  '09': '09-zod-basics.ts',
+  '10': '10-shaping-schemas.ts',
+  '11': '11-unions-and-custom-rules.ts',
+  '12': '12-transforms-and-codecs.ts',
+  '13': '13-one-schema-two-sides.ts',
 }
 
 const lesson = process.argv[2] ?? '01'
 const file = lessons[lesson]
 
 if (!file) {
-  console.error(`Unknown lesson "${lesson}". Choose a lesson from 01 to 08.`)
+  console.error(`Unknown lesson "${lesson}". Choose a lesson from 01 to 13.`)
   process.exit(1)
 }
 
