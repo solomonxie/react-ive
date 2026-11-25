@@ -1,0 +1,23 @@
+{
+  "name": "hello-drizzle",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "lesson": "node scripts/run-lesson.mjs",
+    "generate": "drizzle-kit generate",
+    "typecheck": "tsc --noEmit",
+    "lint": "oxlint"
+  },
+  "dependencies": {
+    "@electric-sql/pglite": "0.6.0",
+    "drizzle-orm": "1.0.0-beta.22"
+  },
+  "devDependencies": {
+    "@types/node": "^24.13.3",
+    "drizzle-kit": "1.0.0-beta.22",
+    "oxlint": "^1.79.0",
+    "tsx": "^4.23.13",
+    "typescript": "~6.0.2"
+  }
+}
