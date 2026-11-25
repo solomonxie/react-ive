@@ -3,10 +3,10 @@ import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const lesson = process.argv[2] ?? '01'
-const validLessons = new Set(['01', '02', '03', '04', '05', '06', '07', '08'])
+const validLessons = new Set(['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17'])
 
 if (!validLessons.has(lesson)) {
-  console.error(`Unknown lesson "${lesson}". Choose a lesson from 01 to 08.`)
+  console.error(`Unknown lesson "${lesson}". Choose a lesson from 01 to 17.`)
   process.exit(1)
 }
 
