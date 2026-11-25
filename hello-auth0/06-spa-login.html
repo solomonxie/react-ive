@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>hello-auth0: lesson 06</title>
+  <script src="https://cdn.jsdelivr.net/npm/@auth0/auth0-spa-js@2.30.0/dist/auth0-spa-js.production.js"></script>
+  <style>
+    body { font: 16px system-ui, sans-serif; max-width: 640px; margin: 3rem auto; padding: 0 1rem; }
+    button { font: inherit; padding: .4rem .9rem; margin-right: .5rem; }
+    pre { background: #f4f4f4; padding: 1rem; overflow-x: auto; white-space: pre-wrap; word-break: break-all; }
+  </style>
+</head>
+<body>
+  <h1>Lesson 06: log in, then call the API</h1>
+  <p id="status">Loading…</p>
+  <button id="login">Log in</button>
+  <button id="call">Call /api/me</button>
+  <button id="logout">Log out</button>
+  <h3>ID token claims (who the user is)</h3>
+  <pre id="user">–</pre>
+  <h3>API response (the access token, checked by the server)</h3>
+  <pre id="api">–</pre>
+
+  <script type="module">
+    const client = await auth0.createAuth0Client({
+      domain: '__AUTH0_DOMAIN__',
+      clientId: '__AUTH0_CLIENT_ID__',
+      authorizationParams: {
+        audience: '__AUTH0_AUDIENCE__', // ask for an access token for *our* API
+        redirect_uri: window.location.origin,
+      },
+    })
+
+    // Coming back from Auth0's login page: swap ?code=... for tokens.
+    if (location.search.includes('code=') && location.search.includes('state=')) {
+      await client.handleRedirectCallback()
+      history.replaceState({}, document.title, location.pathname)
+    }
+
+    const show = async () => {
+      const loggedIn = await client.isAuthenticated()
+      document.querySelector('#status').textContent = loggedIn ? 'Logged in' : 'Logged out'
+      document.querySelector('#user').textContent = loggedIn
+        ? JSON.stringify(await client.getUser(), null, 2)
+        : '–'
+    }
+
+    document.querySelector('#login').onclick = () => client.loginWithRedirect()
+    document.querySelector('#logout').onclick = () =>
+      client.logout({ logoutParams: { returnTo: window.location.origin } })
+    document.querySelector('#call').onclick = async () => {
+      const out = document.querySelector('#api')
+      try {
+        // Returns a cached token, or quietly gets a fresh one from Auth0.
+        const token = await client.getTokenSilently()
+        const response = await fetch('/api/me', { headers: { authorization: `Bearer ${token}` } })
+        out.textContent = `${response.status}\n${JSON.stringify(await response.json(), null, 2)}`
+      } catch (error) {
+        out.textContent = `Not logged in or token failed: ${error.message}`
+      }
+    }
+
+    await show()
+  </script>
+</body>
+</html>
